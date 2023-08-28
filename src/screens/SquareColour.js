@@ -1,5 +1,5 @@
 import React, { useReducer } from 'react';
-import { Text, View, StyleSheet, Button } from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
 import ColourDetail from "../components/ColourDetail";
 
 const COLOR_INCREMENT = 15;
@@ -16,22 +16,22 @@ const COLOR_INCREMENT = 15;
 // There is no compulsion to use these community convention, just in case you do not wish to go by the book. ;-)
 const reducer = (state, action) => {
   // state  === { red: number, green: number, blue: number}
-  // action === { colourToChange : 'red' || 'green' || 'blue', amount: 15 || -15}
+  // action === { type : 'change_red' || 'change_green' || 'change_blue', payload: 15 || -15}
 
-  switch (action.colourToChange) {
-    case 'red': {
-      return state.red + action.amount > 255 || state.red + action.amount < 0 ? state : { ...state, red: state.red + action.amount };
+  switch (action.type) {
+    case 'change_red': {
+      return state.red + action.payload > 255 || state.red + action.payload < 0 ? state : { ...state, red: state.red + action.payload };
     }
-    // never going to do domething like this : state.red = state.red (+ || -) 15
+    // never going to do something like this : state.red = state.red (+ || -) 15
     // anytime we want to change the object, we will rebuild the whole object from the scratch, hence not directly modifying the object, but instead assigning a new object with modified values
 
-    // What we are doing in this statement is that, we are copy pasting the values of the existing object and creating a new object, and then modifying the new object
+    // What we are doing in this statement is that, we are copy-pasting the values of the existing object and creating a new object, and then modifying the new object
 
-    case 'green': {
-      return state.green + action.amount < 0 || state.green + action.amount > 255 ? state : { ...state, green: state.green + action.amount };
+    case 'change_green': {
+      return state.green + action.payload < 0 || state.green + action.payload > 255 ? state : { ...state, green: state.green + action.payload };
     }
-    case 'blue': {
-      return state.blue + action.amount < 0 || state.red + action.amount > 255 ? state : { ...state, blue: state.blue + action.amount };
+    case 'change_blue': {
+      return state.blue + action.payload < 0 || state.red + action.payload > 255 ? state : { ...state, blue: state.blue + action.payload };
     }
     default:
       return state;
@@ -73,18 +73,18 @@ const SquareColour = () => {
       <Text style={ { fontSize: 40 } }>Custom Colour Tile</Text>
       <ColourDetail
         colour="red"
-        onIncrease={ () => { dispatch({ colourToChange: "red", amount: COLOR_INCREMENT }); } }
-        onDecrease={ () => { dispatch({ colourToChange: "red", amount: -1 * COLOR_INCREMENT }); } }
+        onIncrease={ () => { dispatch({ type: "change_red", payload: COLOR_INCREMENT }); } }
+        onDecrease={ () => { dispatch({ type: "change_red", payload: -1 * COLOR_INCREMENT }); } }
       />
       <ColourDetail
         colour="green"
-        onIncrease={ () => { dispatch({ colourToChange: "green", amount: COLOR_INCREMENT }); } }
-        onDecrease={ () => { dispatch({ colourToChange: "green", amount: -1 * COLOR_INCREMENT }); } }
+        onIncrease={ () => { dispatch({ type: "change_green", payload: COLOR_INCREMENT }); } }
+        onDecrease={ () => { dispatch({ type: "change_green", payload: -1 * COLOR_INCREMENT }); } }
       />
       <ColourDetail
         colour="blue"
-        onIncrease={ () => { dispatch({ colourToChange: "blue", amount: COLOR_INCREMENT }); } }
-        onDecrease={ () => { dispatch({ colourToChange: "blue", amount: -1 * COLOR_INCREMENT }); } }
+        onIncrease={ () => { dispatch({ type: "change_blue", payload: COLOR_INCREMENT }); } }
+        onDecrease={ () => { dispatch({ type: "change_blue", payload: -1 * COLOR_INCREMENT }); } }
       />
       <View style={ { height: 150, width: 150, backgroundColor: `rgb(${ red }, ${ green }, ${ blue })` } } />
     </View>
